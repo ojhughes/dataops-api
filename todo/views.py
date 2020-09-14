@@ -7,6 +7,7 @@ from todo.database import db_session
 from todo.models import Entry
 from todo.error_handlers import InvalidUsage
 
+
 @app.route("/", methods=["GET", "POST", "DELETE"])
 def index():
     if request.method == "POST":
@@ -29,6 +30,7 @@ def index():
         for entry in Entry.query.all():
             response.append(construct_dict(entry))
         return json.dumps(response)
+
 
 @app.route("/<int:entry_id>", methods=["GET", "PATCH", "DELETE"])
 def entry(entry_id):
@@ -57,20 +59,22 @@ def entry(entry_id):
     else:
         return jsonify(dict())
 
+
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response
 
+
 def construct_dict(entry):
     if entry.order:
         return dict(title=entry.title, completed=entry.completed,
-            url=url_for("entry", entry_id=entry.id, _external=True),
-            order=entry.order)
+                    url=url_for("entry", entry_id=entry.id, _external=True),
+                    order=entry.order)
     else:
         return dict(title=entry.title, completed=entry.completed,
-            url=url_for("entry", entry_id=entry.id, _external=True))
+                    url=url_for("entry", entry_id=entry.id, _external=True))
 
 
 @app.teardown_appcontext

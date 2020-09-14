@@ -1,10 +1,14 @@
+import os
+
+from flask_sqlalchemy import SQLAlchemy
+
 from todo import app
 
-from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine(app.config["DATABASE"], convert_unicode=True)
+db = SQLAlchemy(app)
+engine = db.get_engine(app=app)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                         autoflush=False,
                                         bind=engine))
@@ -12,9 +16,10 @@ db_session = scoped_session(sessionmaker(autocommit=False,
 Base = declarative_base()
 Base.query = db_session.query_property()
 
+
 def init_db():
-    import todo.models
     Base.metadata.create_all(bind=engine)
+
 
 def drop_tables():
     Base.metadata.drop_all(bind=engine)

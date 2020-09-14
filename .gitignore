@@ -61,3 +61,4 @@ virtualenv/
 
 # debug database
 debug.db
+k8s/secret/*

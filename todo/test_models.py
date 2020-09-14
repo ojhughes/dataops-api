@@ -3,6 +3,7 @@ from todo.test_base import BaseTestCase
 from todo.models import Entry
 from todo.database import db_session
 
+
 class EntryTestCase(BaseTestCase):
 
     def test_string_representation(self):

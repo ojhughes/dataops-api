@@ -1,1 +1,1 @@
-web: gunicorn todo:app --log-file -
+web: gunicorn -b 0.0.0.0:5000 todo:app --log-file -
